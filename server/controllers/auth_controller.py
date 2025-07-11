@@ -13,16 +13,26 @@ from utils import generate_verification_code
 
 
 def register_user(data):
-    email = data["email"]
-    password = generate_password_hash(data["password"])
+    email = data.get("email")
+    password = data.get("password")
+    confirm_password = data.get("confirm_password")
+
+    if not all([email, password, confirm_password]):
+        return jsonify({"message": "All fields are required"}), 400
+
+    if password != confirm_password:
+        return jsonify({"message": "Passwords do not match"}), 400
 
     if User.query.filter_by(email=email).first():
         return jsonify({"message": "User already exists"}), 400
 
+    hashed_password = generate_password_hash(password)
+    code = generate_verification_code()
+
     code = generate_verification_code()
     user = User(
         email=email,
-        password=password,
+        password=hashed_password,
         verification_code=code,
         code_sent_at=datetime.now(),
     )
