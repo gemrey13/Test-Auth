@@ -7,7 +7,7 @@ export const router = createBrowserRouter(
     <>
       {/* Auth routes */}
       <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      {/* <Route path="/register" element={<Register />} /> */}
 
       {/* Client routes */}
       {/* <Route path="client" element={<ProtectedCustomerRoute />}>
